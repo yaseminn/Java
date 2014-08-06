@@ -1,272 +1,109 @@
-/**
- * Created by yasemin on 7/31/14.
- */
-
-import java.util.*;
-
 public class TicTacToe {
-    private char[][] table;
 
-    TicTacToe() {
-    }
+    class Counters {
+        int[] rowCounters;
+        int[] colCounters;
+        int diagonalCounter;
+        int reverseDiagonalCounter;
 
-    TicTacToe(int size) {
-        table = new char[size][size];
-
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                table[i][j] = '-';
-            }
+        Counters(int size) {
+            rowCounters = new int[size];
+            colCounters = new int[size];
         }
     }
 
-    TicTacToe(char[][] initialState) {
-        this.table = initialState;
+    char[][] board;
+    Counters xCounters;
+    Counters oCounters;
+
+    public TicTacToe(int size) {
+        board = new char[size][size];
+        xCounters = new Counters(size);
+        oCounters = new Counters(size);
     }
 
     @Override
     public String toString() {
-        String result = "";
-
-        for (int i = 0; i < table.length; ++i) {
-            for (int j = 0; j < table.length; ++j) {
-                result += table[i][j] + " ";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] != 0) {
+                    sb.append(board[i][j]);
+                } else {
+                    sb.append('-');
+                }
             }
-            result += "\n";
+            sb.append('\n');
         }
-        return result;
+        return sb.toString();
     }
 
-    public int move(Character choice, int row, int col) {
-        if ((col > table.length) || (row > table.length)) {
-            throw new IllegalArgumentException("Col or row is bigger than size");
+// O(n)
+public boolean moveOn(char player, int row, int col) {
+    board[row][col] = player;
+    // Check both horizontal and vertical
+    for (int i = 0; i < board.length; i++) {
+        if (board[row][i] != player || board[i][col] != player) {
+            return false;
         }
-
-        table[row][col] = choice;
-        int win = 1;
-        int over = -1;
-        int result = over;
-
-        if (row == col) {
-            if (checkDiagonal('x') || checkDiagonal('o')) {
-                result = win;
-            }
-        }
-
-        if (table.length - 1 - row == col) {
-            if (checkReverseDiagonal('x') || checkReverseDiagonal('o')) {
-                result = win;
-            }
-        }
-
-        if (checkHorizontal('x', row) || checkHorizontal('o', row)) {
-            result = win;
-        }
-        if (checkvertical('x', col) || checkvertical('o', col)) {
-            result = win;
-        }
-
-        return result;
     }
-
-    boolean checkHorizontal(char c, int row) {
-        int horizontalCount = 0;
-        boolean result = false;
-
-        int size = table.length;
-
-        for (int j = 0; j < table.length; ++j) {
-            if (table[row][j] != c) {
-                break;
-            } else {
-                horizontalCount++;
-            }
-        }
-        if (horizontalCount == table.length) {
-            result = true;
-        }
-
-        return result;
-    }
-
-    boolean checkvertical(char c, int column) {
-        int verticalCount = 0;
-        boolean result = false;
-
-        for (int i = 0; i < table.length; ++i) {
-            if (table[i][column] != c) {
-                break;
-            } else {
-                verticalCount++;
-            }
-        }
-        if (verticalCount == table.length) {
-            result = true;
-        }
-        return result;
-    }
-
-    boolean checkDiagonal(char c) {
-        int diagonalCount = 0;
-        boolean result = false;
-
-        for (int i = 0; i < table.length; ++i) {
-            if (table[i][i] == c) {
-                diagonalCount++;
-            }
-            if (diagonalCount == table.length) {
-                result = true;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    boolean checkReverseDiagonal(char c) {
-        int reverseDiagonalCount = 0;
-        boolean result = false;
-        int j = table.length - 1;
-
-        for (int i = 0; i < table.length; ++i) {
-            if (table[i][j] == c) {
-                reverseDiagonalCount++;
-            }
-            if (reverseDiagonalCount == table.length) {
-                result = true;
-                break;
-            }
-            j--;
-        }
-
-        return result;
-    }
-
-    int test() {
-        TicTacToe t = new TicTacToe(new char[][]{
-                {'x', '-', 'x'},
-                {'-', '-', '-'},
-                {'x', '-', 'x'}
-        });
-
-        System.out.println(t.toString());
-        int result = t.move('x', 1, 0);
-        System.out.println(t.toString());
-
-        return result;
-    }
-
-    int test2() {
-        TicTacToe t = new TicTacToe(new char[][]{
-                {'x', '-', 'x'},
-                {'-', 'x', '-'},
-                {'x', '-', 'x'}
-        });
-
-        System.out.println(t.toString());
-        int result = t.move('x', 1, 2);
-        System.out.println(t.toString());
-
-        return result;
-    }
-
-    int test3() {
-        TicTacToe t = new TicTacToe(new char[][]{
-                {'x', '-', 'x'},
-                {'-', '-', '-'},
-                {'x', '-', 'x'}
-        });
-
-        System.out.println(t.toString());
-        int result = t.move('x', 1, 1);
-        System.out.println(t.toString());
-
-        return result;
-    }
-
-    int test4() {
-        TicTacToe t = new TicTacToe(new char[][]{
-                {'x', '-', 'x', '-'},
-                {'-', '-', '-', '-'},
-                {'x', '-', 'x', '-'},
-                {'x', '-', 'x', '-'},
-        });
-
-        System.out.println(t.toString());
-        int result = t.move('x', 1, 1);
-        System.out.println(t.toString());
-
-        return result;
-    }
-
-    int test5() {
-        TicTacToe t = new TicTacToe(new char[][]{
-                {'x', '-', 'x', '-'},
-                {'-', '-', '-', '-'},
-                {'x', '-', 'x', '-'},
-                {'x', '-', 'x', '-'},
-        });
-
-        System.out.println(t.toString());
-        int result = t.move('x', 3, 1);
-        System.out.println(t.toString());
-
-        return result;
-    }
-
-    void testAllCases() {
-        TicTacToe t = new TicTacToe(3);
-        System.out.println(t.toString());
-        /*
-        System.out.println(t.move('x', 0, 0));
-        System.out.println(t.move('x', 0, 1));
-        System.out.println(t.move('x', 0, 2));
-        */
-        /*
-        System.out.println(t.move('x', 1, 0));
-        System.out.println(t.move('x', 1, 1));
-        System.out.println(t.move('x', 1, 2));
-        */
-        /*
-        System.out.println(t.move('x', 2, 0));
-        System.out.println(t.move('x', 2, 1));
-        System.out.println(t.move('x', 2, 2));
-        */
-        /*
-        System.out.println(t.move('x', 0, 0));
-        System.out.println(t.move('x', 1, 0));
-        System.out.println(t.move('x', 2, 0));
-        */
-        /*
-        System.out.println(t.move('x', 0, 1));
-        System.out.println(t.move('x', 1, 1));
-        System.out.println(t.move('x', 2, 1));
-        */
-        /*
-        System.out.println(t.move('x', 0, 2));
-        System.out.println(t.move('x', 1, 2));
-        System.out.println(t.move('x', 2, 2));
-        */
-        /*
-        System.out.println(t.move('x', 0, 0));
-        System.out.println(t.move('x', 1, 1));
-        System.out.println(t.move('x', 2, 2));
-        */
-        /*
-        System.out.println(t.move('x', 0, 2));
-        System.out.println(t.move('x', 1, 1));
-        System.out.println(t.move('x', 2, 0));
-        */
-        System.out.println(t.toString());
-    }
-
-    public static void main(String args[]) {
-        TicTacToe t = new TicTacToe();
-        t.testAllCases();
-        /*System.out.println(t.test());
-        System.out.println(t.test2());
-        System.out.println(t.test3());
-        System.out.println(t.test4());*/
-        System.out.println(t.test5());
-    }
+    // I omitted diagonals for simplicity.
+    return true;
 }
+
+    // O(1), but requires size * 4 counters.
+    public boolean moveO1(char player, int row, int col) {
+        board[row][col] = player;
+        Counters c = player == 'x' ? xCounters : oCounters;
+        c.colCounters[col]++;
+        c.rowCounters[row]++;
+        if (row == col) {
+            c.diagonalCounter++;
+        }
+        if (row == board.length - 1 - col) {
+            c.reverseDiagonalCounter++;
+        }
+        if ( c.colCounters[col] == board.length ||
+                c.rowCounters[row] == board.length ||
+                c.diagonalCounter == board.length ||
+                c.reverseDiagonalCounter == board.length
+                ) {
+            return true;
+        }
+        return false;
+    }
+
+    void simulateMoves(char[][] initialState) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (initialState[i][j] != '-') {
+                    moveO1(initialState[i][j], i, j);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        TicTacToe ttt = new TicTacToe(3);
+        ttt.simulateMoves(new char[][]{
+                {'x', 'o', '-'},
+                {'x', '-', 'o'},
+                {'-', '-', 'o'}
+        });
+        if (ttt.moveO1('x', 2, 0)) {
+            System.out.println("x won.");
+        }
+
+        ttt = new TicTacToe(3);
+        ttt.simulateMoves(new char[][]{
+                {'x', 'o', '-'},
+                {'-', '-', 'o'},
+                {'-', '-', 'o'}
+        });
+        if (!ttt.moveO1('x', 2, 0)) {
+            System.out.println("x did not win.");
+        }
+    }
+
+}
+
