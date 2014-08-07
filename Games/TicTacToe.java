@@ -41,15 +41,32 @@ public class TicTacToe {
 // O(n)
 public boolean moveOn(char player, int row, int col) {
     board[row][col] = player;
-    // Check both horizontal and vertical
+    int count = 0;
+    // Check horizontal
     for (int i = 0; i < board.length; i++) {
-        if (board[row][i] != player || board[i][col] != player) {
-            return false;
-        }
+      if (board[row][i] != player) {
+        break;
+      }
+	count++;
     }
-    // I omitted diagonals for simplicity.
-    return true;
-}
+    if (count == board.length) {
+	return true;
+    }
+    count = 0;
+    for (int i = 0; i < board.length; i++) {
+      if (board[i][col] == player) {
+		break;
+      }
+      count++;
+    }
+    if (count == board.length) {
+	return true;
+    }
+    // I omitted diagonal checks for simplicity.
+      
+    return false;
+  }
+
 
     // O(1), but requires size * 4 counters.
     public boolean moveO1(char player, int row, int col) {
