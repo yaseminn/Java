@@ -19,3 +19,17 @@ Structural Patterns: Concept of inheritance is used to compose interfaces and de
 Behavioral Patterns: Concerned with communication between objects.
 
 J2EE Patterns: Concerned with identified by Sun Java Center.
+
+
+
+
+Builder ( While Writing Unit Tests )
+Prototype ( Cloning )
+Adapter ( asList , toString )
+Chain Of Responsibility ( Logging )
+Singleton
+Factory ( Action Mapping )
+Proxy
+Observer ( Event Listener )
+MVC ( Web frameworks )
+Filter ( Criteria )
