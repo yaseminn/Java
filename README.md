@@ -4,7 +4,7 @@ Java
 Java works <br />
 Java rocks <br />
 
-####DESIGN PATTERN-------####<br />
+####DESIGN PATTERN-------<br />
 **Creational Patterns** : Provided to create objects while hiding the creation logic, rather than instantiating objects directly using new operator.<br />
   
   * Factory<br />
